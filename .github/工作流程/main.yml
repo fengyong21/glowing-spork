@@ -1,0 +1,57 @@
+import random
+from faker import Faker
+
+# 根据关键词筛选和分类生成的内容
+def generate_content(category, keywords, num):
+    fake = Faker('zh_CN')
+
+    with open("{}_content.txt".format(category), "w", encoding="utf-8") as f:
+        # 针对不同类型的内容选择不同的生成方式
+        if category == "fishing":
+            for i in range(num):
+                sentence = fake.sentence()
+                if any(keyword in sentence for keyword in keywords):
+                    f.write(sentence + "\n")
+        elif category == "legal":
+            for i in range(num):
+                sentence = fake.sentence()
+                if any(keyword in sentence for keyword in keywords):
+                    f.write(sentence + "\n")
+        elif category == "food":
+            for i in range(num):
+                word = fake.word()
+                if any(keyword in word for keyword in keywords):
+                    f.write(word + "\n")
+        elif category == "travel":
+            for i in range(num):
+                sentence = fake.sentence()
+                if any(keyword in sentence for keyword in keywords):
+                    f.write(sentence + "\n")
+        elif category == "music":
+            for i in range(num):
+                word = fake.word()
+                if any(keyword in word for keyword in keywords):
+                    f.write(word + "\n")
+
+# 获取用户输入的分类和关键词列表
+category = input("请输入分类名称：")
+keywords = input("请输入关键词列表，以逗号分隔：").split(",")
+num = int(input("请输入需要生成的内容数量："))
+
+# 生成指定分类、关键词、数量的文本内容文件
+generate_content(category, keywords, num)
+
+# 连续对答的回合数
+rounds = 5
+
+# 开始连续对答
+for i in range(rounds):
+    if i == 0: # 第一回合，随机选择一个问题作为起点
+        current_q = random.choice(list(qa_pairs.keys()))
+    else: # 后面几回合，问题来自上一回合的答案
+        current_q = qa_pairs[last_a]
+
+    print("Round {}: {}".format(i+1, current_q))
+    last_a = qa_pairs[current_q]
+    user_a = input("Your answer: ")
+    print("Answer: {}\n".format(last_a))
